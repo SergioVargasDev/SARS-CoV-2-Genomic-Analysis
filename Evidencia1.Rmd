@@ -1,0 +1,861 @@
+---
+title: "Actividad Colaborativa en Clase"
+author: "Sergio Tomás Vargas Villarreal A00837196, Fernando Pérez García A01285236"
+date: "2023-05-5"
+output:
+  word_document: default
+  html_document: default
+  pdf_document: default
+--- 
+
+
+
+
+```{r}
+library(rentrez)
+library(Biostrings)
+
+library(officer)
+
+
+# 1.- Obtén las secuencias de los genomas de las variantes de SARS-CoV-2 y otros virus que decidas (8-10 genomas en total) desde el NCBILinks to an external site. o el buscador de virus del NCBILinks to an external site..
+library(Biostrings)
+
+setwd("/Users/sergiotomasvargasvillarreal/Desktop/2do semestre/R/Reto")
+
+# MT705576.1: Variante B.1.1.519 de SARS-CoV-2 (Países Bajos)
+# MW631258.1: Variante B.1.1.7 de SARS-CoV-2 (Reino Unido)
+# MW787229.1: Variante B.1.258 de SARS-CoV-2 (Sudáfrica)
+# MT676610.1: SARS-CoV-2 (Estados Unidos)
+# MT757480.1: SARS-CoV-2 (Estados Unidos)
+# MW857166.1: Variante P.1 de SARS-CoV-2 (Brasil)
+# MW857167.1: Variante P.2 de SARS-CoV-2 (Brasil)
+# MW857168.1: Variante B.1.351 de SARS-CoV-2 (Sudáfrica)
+# MW857169.1: Variante B.1.427 de SARS-CoV-2 (California)
+# MW857170.1: Variante B.1.429 de SARS-CoV-2 (California)
+
+
+nombres <- c("B.1.1.519 (Países Bajos)", "B.1.1.7 (Reino Unido)", "B.1.258 (Sudáfrica)", "SARS-CoV-2 (Estados Unidos)", "SARS-CoV-2 (Estados Unidos)", "P.1 (Brasil)", "P.2 (Brasil)", "B.1.351 (Sudáfrica)", "B.1.427 (California)", "B.1.429 (California)")
+
+
+acceso <- c("MT705576.1", "MW631258.1", "MW787229.1", "MT676610.1", "MT757480.1", "MW857166.1", "MW857167.1", "MW857168.1", "MW857169.1", "MW857170.1")
+
+
+url <- paste("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nucleotide&id=", paste(acceso, collapse = ","), "&rettype=fasta&retmode=text", sep = "")
+datos <- readDNAStringSet(url, format = "fasta")
+
+
+pregunta_1 <- function(){
+  return(datos)
+}
+
+
+
+pregunta_2 <- function(){
+  #2.Calcula la longitud de las secuencias de cada variante. Muestra el resultado impreso en consola y el código que utilizaste para realizar este punto.
+  longitudes <- c()
+  for (i in 1:length(datos)) {
+    secuencia <- as.character(datos[[i]])
+    longitudes[i] <- nchar(secuencia)
+  }
+  return(longitudes)
+}
+
+#3.Genera una gráfica en la que se visualice la longitud de los 10 genomas virales que analizaste. Muestra el código que utilizaste para realizar este punto.
+
+pregunta_3 <- function(){
+  longitudes <- pregunta_2()
+  barplot(longitudes[order(match(acceso, acceso))], 
+          names.arg = acceso[order(match(acceso, acceso))], 
+          main = "Longitud de genomas virales", 
+          ylab = "Longitud (número de nucleótidos)", 
+          col = "lightblue", 
+          border = "black",
+          las=2,
+          cex.names=0.8,
+          width=0.8)
+}
+
+
+#5.Calcula la composición de nucleótidos a cada una de las variantes del virus. Muestra el resultado impreso en consola y el código que utilizaste para realizar este punto.
+pregunta_5_1 <- function() {
+  composicion <- sapply(datos, function(x) letterFrequency(x, letters=c("A", "C", "G", "T"))/length(x))
+  lista <- vector("list", 4)
+  lista_1 <- vector("list", 4)
+  long <- pregunta_2()
+  
+  for (i in 1:4) {
+    lista[[i]] <- composicion[i, 1]
+  }
+  
+  for (i in 1:4) {
+    nucleotido <- unlist(lista)[i] * long[1]
+    lista_1[[i]] <- nucleotido
+  }
+  
+  print(paste("La cantidad de A:", unlist(lista_1[1])))
+  print(paste("La cantidad de T:", unlist(lista_1[2])))
+  print(paste("La cantidad de G:", unlist(lista_1[3])))
+  print(paste("La cantidad de C:", unlist(lista_1[4])))
+  vector_5_1 <- c(lista_1[1],  lista_1[2],  lista_1[3], lista_1[4])
+  
+  
+  return(vector_5_1)
+}
+  
+  
+  pregunta_6_1 <- function(){
+    vector <- pregunta_5_1()
+    
+    names(vector) <- c("A", "T", "G", "C")
+    heights <- as.numeric(vector)
+     barplot(heights, names.arg=names(vector), col="blue",
+      xlab="Nucleótidos", ylab="Cantidad", ylim=c(0, max(heights)+0.01*max(heights)))
+
+}
+pregunta_5_2 <- function() {
+  composicion <- sapply(datos, function(x) letterFrequency(x, letters=c("A", "C", "G", "T"))/length(x))
+  lista <- vector("list", 4)
+  lista_1 <- vector("list", 4)
+  long <- pregunta_2()
+  
+  for (i in 1:4) {
+    lista[[i]] <- composicion[i, 2]
+  }
+  
+  for (i in 1:4) {
+    nucleotido <- unlist(lista)[i] * long[2]
+    lista_1[[i]] <- nucleotido
+  }
+  
+  print(paste("La cantidad de A:", unlist(lista_1[1])))
+  print(paste("La cantidad de T:", unlist(lista_1[2])))
+  print(paste("La cantidad de G:", unlist(lista_1[3])))
+  print(paste("La cantidad de C:", unlist(lista_1[4])))
+  vector_5_2 <- c(lista_1[1],  lista_1[2],  lista_1[3], lista_1[4]
+  )
+  
+  
+  return(vector_5_2)
+}
+
+
+pregunta_6_2 <- function(){
+    vector <- pregunta_5_2()
+    
+    names(vector) <- c("A", "T", "G", "C")
+    heights <- as.numeric(vector)
+     barplot(heights, names.arg=names(vector), col="blue",
+      xlab="Nucleótidos", ylab="Cantidad", ylim=c(0, max(heights)+0.01*max(heights)))
+     
+     
+}    
+
+pregunta_5_3 <- function() {
+  composicion <- sapply(datos, function(x) letterFrequency(x, letters=c("A", "C", "G", "T"))/length(x))
+  lista <- vector("list", 4)
+  lista_1 <- vector("list", 4)
+  long <- pregunta_2()
+  
+  for (i in 1:4) {
+    lista[[i]] <- composicion[i, 3]
+  }
+  
+  for (i in 1:4) {
+    nucleotido <- unlist(lista)[i] * long[3]
+    lista_1[[i]] <- nucleotido
+  }
+  
+  print(paste("La cantidad de A:", unlist(lista_1[1])))
+  print(paste("La cantidad de T:", unlist(lista_1[2])))
+  print(paste("La cantidad de G:", unlist(lista_1[3])))
+  print(paste("La cantidad de C:", unlist(lista_1[4])))
+  vector_5_3 <- c(lista_1[1],  lista_1[2],  lista_1[3], lista_1[4]
+  )
+
+  return(vector_5_3)
+}
+
+
+pregunta_6_3 <- function(){
+    vector <- pregunta_5_3()
+    
+    names(vector) <- c("A", "T", "G", "C")
+    heights <- as.numeric(vector)
+     barplot(heights, names.arg=names(vector), col="blue",
+      xlab="Nucleótidos", ylab="Cantidad", ylim=c(0, max(heights)+0.01*max(heights)))
+     
+     
+}    
+
+pregunta_5_4 <- function() {
+  composicion <- sapply(datos, function(x) letterFrequency(x, letters=c("A", "C", "G", "T"))/length(x))
+  lista <- vector("list", 4)
+  lista_1 <- vector("list", 4)
+  long <- pregunta_2()
+  
+  for (i in 1:4) {
+    lista[[i]] <- composicion[i, 4]
+  }
+  
+  for (i in 1:4) {
+    nucleotido <- unlist(lista)[i] * long[4]
+    lista_1[[i]] <- nucleotido
+  }
+  
+  print(paste("La cantidad de A:", unlist(lista_1[1])))
+  print(paste("La cantidad de T:", unlist(lista_1[2])))
+  print(paste("La cantidad de G:", unlist(lista_1[3])))
+  print(paste("La cantidad de C:", unlist(lista_1[4])))
+  vector_5_4 <- c(lista_1[1],  lista_1[2],  lista_1[3], lista_1[4]
+  )
+
+  return(vector_5_4)
+}
+
+
+pregunta_6_4 <- function(){
+    vector <- pregunta_5_4()
+    
+    names(vector) <- c("A", "T", "G", "C")
+    heights <- as.numeric(vector)
+     barplot(heights, names.arg=names(vector), col="blue",
+      xlab="Nucleótidos", ylab="Cantidad", ylim=c(0, max(heights)+0.01*max(heights)))
+     
+     
+}    
+
+pregunta_5_5 <- function() {
+  composicion <- sapply(datos, function(x) letterFrequency(x, letters=c("A", "C", "G", "T"))/length(x))
+  lista <- vector("list", 4)
+  lista_1 <- vector("list", 4)
+  long <- pregunta_2()
+  
+  for (i in 1:4) {
+    lista[[i]] <- composicion[i, 5]
+  }
+  
+  for (i in 1:4) {
+    nucleotido <- unlist(lista)[i] * long[5]
+    lista_1[[i]] <- nucleotido
+  }
+  
+  print(paste("La cantidad de A:", unlist(lista_1[1])))
+  print(paste("La cantidad de T:", unlist(lista_1[2])))
+  print(paste("La cantidad de G:", unlist(lista_1[3])))
+  print(paste("La cantidad de C:", unlist(lista_1[4])))
+  vector_5_5 <- c(lista_1[1],  lista_1[2],  lista_1[3], lista_1[4]
+  )
+
+  return(vector_5_5)
+}
+
+
+pregunta_6_5 <- function(){
+    vector <- pregunta_5_5()
+    
+    names(vector) <- c("A", "T", "G", "C")
+    heights <- as.numeric(vector)
+     barplot(heights, names.arg=names(vector), col="blue",
+      xlab="Nucleótidos", ylab="Cantidad", ylim=c(0, max(heights)+0.01*max(heights)))
+     
+     
+}    
+
+pregunta_5_6 <- function() {
+  composicion <- sapply(datos, function(x) letterFrequency(x, letters=c("A", "C", "G", "T"))/length(x))
+  lista <- vector("list", 4)
+  lista_1 <- vector("list", 4)
+  long <- pregunta_2()
+  
+  for (i in 1:4) {
+    lista[[i]] <- composicion[i, 6]
+  }
+  
+  for (i in 1:4) {
+    nucleotido <- unlist(lista)[i] * long[6]
+    lista_1[[i]] <- nucleotido
+  }
+  
+  print(paste("La cantidad de A:", unlist(lista_1[1])))
+  print(paste("La cantidad de T:", unlist(lista_1[2])))
+  print(paste("La cantidad de G:", unlist(lista_1[3])))
+  print(paste("La cantidad de C:", unlist(lista_1[4])))
+  vector_5_6 <- c(lista_1[1],  lista_1[2],  lista_1[3], lista_1[4]
+  )
+ 
+  
+  return(vector_5_6)
+}
+
+
+
+pregunta_6_6 <- function(){
+    vector <- pregunta_5_6()
+    
+    names(vector) <- c("A", "T", "G", "C")
+    heights <- as.numeric(vector)
+     barplot(heights, names.arg=names(vector), col="blue",
+      xlab="Nucleótidos", ylab="Cantidad", ylim=c(0, max(heights)+0.01*max(heights)))
+     
+     
+}    
+
+
+pregunta_5_7 <- function() {
+  composicion <- sapply(datos, function(x) letterFrequency(x, letters=c("A", "C", "G", "T"))/length(x))
+  lista <- vector("list", 4)
+  lista_1 <- vector("list", 4)
+  long <- pregunta_2()
+  
+  for (i in 1:4) {
+    lista[[i]] <- composicion[i,7]
+  }
+  
+  for (i in 1:4) {
+    nucleotido <- unlist(lista)[i] * long[7]
+    lista_1[[i]] <- nucleotido
+  }
+  
+  print(paste("La cantidad de A:", unlist(lista_1[1])))
+  print(paste("La cantidad de T:", unlist(lista_1[2])))
+  print(paste("La cantidad de G:", unlist(lista_1[3])))
+  print(paste("La cantidad de C:", unlist(lista_1[4])))
+  vector_5_7 <- c(lista_1[1],  lista_1[2],  lista_1[3], lista_1[4]
+  )
+ 
+  
+  return(vector_5_7)
+}
+
+
+
+pregunta_6_7 <- function(){
+    vector <- pregunta_5_7()
+    
+    names(vector) <- c("A", "T", "G", "C")
+    heights <- as.numeric(vector)
+     barplot(heights, names.arg=names(vector), col="blue",
+      xlab="Nucleótidos", ylab="Cantidad", ylim=c(0, max(heights)+0.01*max(heights)))
+     
+     
+}    
+
+pregunta_5_8 <- function() {
+  composicion <- sapply(datos, function(x) letterFrequency(x, letters=c("A", "C", "G", "T"))/length(x))
+  lista <- vector("list", 4)
+  lista_1 <- vector("list", 4)
+  long <- pregunta_2()
+  
+  for (i in 1:4) {
+    lista[[i]] <- composicion[i,8]
+  }
+  
+  for (i in 1:4) {
+    nucleotido <- unlist(lista)[i] * long[8]
+    lista_1[[i]] <- nucleotido
+  }
+  
+  print(paste("La cantidad de A:", unlist(lista_1[1])))
+  print(paste("La cantidad de T:", unlist(lista_1[2])))
+  print(paste("La cantidad de G:", unlist(lista_1[3])))
+  print(paste("La cantidad de C:", unlist(lista_1[4])))
+  vector_5_8 <- c(lista_1[1],  lista_1[2],  lista_1[3], lista_1[4]
+  )
+
+  
+  return(vector_5_8)
+}
+
+
+
+pregunta_6_8 <- function(){
+    vector <- pregunta_5_8()
+    
+    names(vector) <- c("A", "T", "G", "C")
+    heights <- as.numeric(vector)
+     barplot(heights, names.arg=names(vector), col="blue",
+      xlab="Nucleótidos", ylab="Cantidad", ylim=c(0, max(heights)+0.01*max(heights)))
+     
+     
+}    
+
+pregunta_5_9 <- function() {
+  composicion <- sapply(datos, function(x) letterFrequency(x, letters=c("A", "C", "G", "T"))/length(x))
+  lista <- vector("list", 4)
+  lista_1 <- vector("list", 4)
+  long <- pregunta_2()
+  
+  for (i in 1:4) {
+    lista[[i]] <- composicion[i,9]
+  }
+  
+  for (i in 1:4) {
+    nucleotido <- unlist(lista)[i] * long[9]
+    lista_1[[i]] <- nucleotido
+  }
+  
+  print(paste("La cantidad de A:", unlist(lista_1[1])))
+  print(paste("La cantidad de T:", unlist(lista_1[2])))
+  print(paste("La cantidad de G:", unlist(lista_1[3])))
+  print(paste("La cantidad de C:", unlist(lista_1[4])))
+  vector_5_9 <- c(lista_1[1],  lista_1[2],  lista_1[3], lista_1[4]
+  )
+ 
+  
+  return(vector_5_9)
+}
+
+
+pregunta_6_9 <- function(){
+    vector <- pregunta_5_9()
+    
+    names(vector) <- c("A", "T", "G", "C")
+    heights <- as.numeric(vector)
+     barplot(heights, names.arg=names(vector), col="blue",
+      xlab="Nucleótidos", ylab="Cantidad", ylim=c(0, max(heights)+0.01*max(heights)))
+     
+     
+}    
+
+
+pregunta_5_10 <- function() {
+  composicion <- sapply(datos, function(x) letterFrequency(x, letters=c("A", "C", "G", "T"))/length(x))
+  lista <- vector("list", 4)
+  lista_1 <- vector("list", 4)
+  long <- pregunta_2()
+  
+  for (i in 1:4) {
+    lista[[i]] <- composicion[i,10]
+  }
+  
+  for (i in 1:4) {
+    nucleotido <- unlist(lista)[i] * long[10]
+    lista_1[[i]] <- nucleotido
+  }
+  
+  print(paste("La cantidad de A:", unlist(lista_1[1])))
+  print(paste("La cantidad de T:", unlist(lista_1[2])))
+  print(paste("La cantidad de G:", unlist(lista_1[3])))
+  print(paste("La cantidad de C:", unlist(lista_1[4])))
+  vector_5_10 <- c(lista_1[1],  lista_1[2],  lista_1[3], lista_1[4]
+  )
+ 
+  
+  return(vector_5_10)
+}
+
+
+pregunta_6_10 <- function(){
+    vector <- pregunta_5_10()
+    
+    names(vector) <- c("A", "T", "G", "C")
+    heights <- as.numeric(vector)
+     barplot(heights, names.arg=names(vector), col="blue",
+      xlab="Nucleótidos", ylab="Cantidad", ylim=c(0, max(heights)+0.01*max(heights)))
+     
+     
+}    
+
+
+
+pregunta_8_1 <- function() {
+  longitudes <- pregunta_2()
+  longitud <- longitudes[1]
+  
+  G_C <- pregunta_5_1()
+  G <- as.numeric(G_C[3])
+  C <- as.numeric(G_C[4])
+  
+  suma <- G + C
+  porcentaje <- suma * 100 / longitud
+  
+   cat("El porcentaje de GC de la variante es: ", round(porcentaje, 2), "%\n")
+   return(porcentaje)
+}
+
+
+pregunta_8_2 <- function() {
+  longitudes <- pregunta_2()
+  longitud <- longitudes[2]
+  
+  G_C <- pregunta_5_2()
+  G <- as.numeric(G_C[3])
+  C <- as.numeric(G_C[4])
+  
+  suma <- G + C
+  porcentaje <- suma * 100 / longitud
+  
+  cat("El porcentaje de GC de la variante es: ", round(porcentaje, 2), "%\n")
+  return(porcentaje)
+}
+
+
+pregunta_8_3 <- function() {
+  longitudes <- pregunta_2()
+  longitud <- longitudes[3]
+  
+  G_C <- pregunta_5_3()
+  G <- as.numeric(G_C[3])
+  C <- as.numeric(G_C[4])
+  
+  suma <- G + C
+  porcentaje <- suma * 100 / longitud
+  
+   cat("El porcentaje de GC de la variante es: ", round(porcentaje, 2), "%\n")
+   return(porcentaje)
+}
+
+
+pregunta_8_4 <- function() {
+  longitudes <- pregunta_2()
+  longitud <- longitudes[4]
+  
+  G_C <- pregunta_5_4()
+  G <- as.numeric(G_C[3])
+  C <- as.numeric(G_C[4])
+  
+  suma <- G + C
+  porcentaje <- suma * 100 / longitud
+  
+    cat("El porcentaje de GC de la variante es: ", round(porcentaje, 2), "%\n")
+    return(porcentaje)
+}
+
+
+
+pregunta_8_5 <- function() {
+  longitudes <- pregunta_2()
+  longitud <- longitudes[5]
+  
+  G_C <- pregunta_5_5()
+  G <- as.numeric(G_C[3])
+  C <- as.numeric(G_C[4])
+  
+  suma <- G + C
+  porcentaje <- suma * 100 / longitud
+  
+   cat("El porcentaje de GC de la variante es: ", round(porcentaje, 2), "%\n")
+   return(porcentaje)
+}
+
+
+pregunta_8_6 <- function() {
+  longitudes <- pregunta_2()
+  longitud <- longitudes[6]
+  
+  G_C <- pregunta_5_6()
+  G <- as.numeric(G_C[3])
+  C <- as.numeric(G_C[4])
+  
+  suma <- G + C
+  porcentaje <- suma * 100 / longitud
+  
+    cat("El porcentaje de GC de la variante es: ", round(porcentaje, 2), "%\n")
+    return(porcentaje)
+}
+
+
+
+pregunta_8_7 <- function() {
+  longitudes <- pregunta_2()
+  longitud <- longitudes[7]
+  
+  G_C <- pregunta_5_7()
+  G <- as.numeric(G_C[3])
+  C <- as.numeric(G_C[4])
+  
+  suma <- G + C
+  porcentaje <- suma * 100 / longitud
+  
+  cat("El porcentaje de GC de la variante es: ", round(porcentaje, 2), "%\n")
+  return(porcentaje)
+}
+
+
+
+pregunta_8_8 <- function() {
+  longitudes <- pregunta_2()
+  longitud <- longitudes[8]
+  
+  G_C <- pregunta_5_8()
+  G <- as.numeric(G_C[3])
+  C <- as.numeric(G_C[4])
+  
+  suma <- G + C
+  porcentaje <- suma * 100 / longitud
+  
+   cat("El porcentaje de GC de la variante es: ", round(porcentaje, 2), "%\n")
+   return(porcentaje)
+}
+
+
+pregunta_8_9 <- function() {
+  longitudes <- pregunta_2()
+  longitud <- longitudes[9]
+  
+  G_C <- pregunta_5_9()
+  G <- as.numeric(G_C[3])
+  C <- as.numeric(G_C[4])
+  
+  suma <- G + C
+  porcentaje <- suma * 100 / longitud
+  
+    cat("El porcentaje de GC de la variante es: ", round(porcentaje, 2), "%\n")
+    return(porcentaje)
+}
+
+
+pregunta_8_10 <- function() {
+  longitudes <- pregunta_2()
+  longitud <- longitudes[10]
+  
+  G_C <- pregunta_5_10()
+  G <- as.numeric(G_C[3])
+  C <- as.numeric(G_C[4])
+  
+  suma <- G + C
+  porcentaje <- suma * 100 / longitud
+  
+  cat("El porcentaje de GC de la variante es: ", round(porcentaje, 2), "%\n")
+  return(porcentaje)
+}
+
+pregunta_9 <- function() {
+  GC_1 <- pregunta_8_1()
+  GC_2 <- pregunta_8_2()
+  GC_3 <- pregunta_8_3()
+  GC_4 <- pregunta_8_4()
+  GC_5 <- pregunta_8_5()
+  GC_6 <- pregunta_8_6()
+  GC_7 <- pregunta_8_7()
+  GC_8 <- pregunta_8_8()
+  GC_9 <- pregunta_8_9()
+  GC_10 <- pregunta_8_10()
+  
+  porcentajes <- c(GC_1, GC_2, GC_3, GC_4, GC_5, GC_6, GC_7, GC_8, GC_9, GC_10)
+  genomas <- c("MT705576.1", "MW631258.1", "MW787229.1", "MT676610.1", "MT757480.1",
+               "MW857166.1", "MW857167.1", "MW857168.1", "MW857169.1", "MW857170.1")
+  
+  barplot(porcentajes, names.arg = genomas, xlab = "", ylab = "Porcentaje de GC",
+          col = "steelblue", las = 2, ylim = c(0, 100))
+}
+
+
+pregunta_11 <- function(){
+  GC_1 <- pregunta_8_1()
+  GC_2 <- pregunta_8_2()
+  GC_3 <- pregunta_8_3()
+  GC_4 <- pregunta_8_4()
+  GC_5 <- pregunta_8_5()
+  GC_6 <- pregunta_8_6()
+  GC_7 <- pregunta_8_7()
+  GC_8 <- pregunta_8_8()
+  GC_9 <- pregunta_8_9()
+  GC_10 <- pregunta_8_10()
+  nombres_genomas <- c("Variante B.1.1.519 de SARS-CoV-2 (Países Bajos)",
+                    "Variante B.1.1.7 de SARS-CoV-2 (Reino Unido)",
+                    "Variante B.1.258 de SARS-CoV-2 (Sudáfrica)",
+                    "SARS-CoV-2 (Estados Unidos)",
+                    "SARS-CoV-2 (Estados Unidos)",
+                    "Variante P.1 de SARS-CoV-2 (Brasil)",
+                    "Variante P.2 de SARS-CoV-2 (Brasil)",
+                    "Variante B.1.351 de SARS-CoV-2 (Sudáfrica)",
+                    "Variante B.1.427 de SARS-CoV-2 (California)",
+                    "Variante B.1.429 de SARS-CoV-2 (California)")
+
+  codigos_genomas <-  c("MT705576.1", "MW631258.1", "MW787229.1", "MT676610.1", "MT757480.1",
+               "MW857166.1", "MW857167.1", "MW857168.1", "MW857169.1", "MW857170.1")
+  
+  longitudes_genomas <- pregunta_2()
+
+  
+  GC_genomas <- c(GC_1, GC_2, GC_3, GC_4, GC_5, GC_6, GC_7, GC_8, GC_9, GC_10)
+  
+  
+  
+  marco <- data.frame(Nombre_Común = nombres_genomas, ID = codigos_genomas, Longitud = longitudes_genomas, GC = GC_genomas)
+  
+  
+}
+  
+
+  
+main <- function(){
+
+  uno <- pregunta_1()
+  cat("1.Obtén las secuencias de los genomas de las variantes de SARS-CoV-2 y otros virus que tu decidas (8-10 genomas en total) desde el NCBILinks to an external site. o el buscador de virus del NCBILinks to an external site. \n\n")
+  print(uno)
+  
+
+  dos <- pregunta_2()
+  cat("2.Calcula la longitud de las secuencias de cada variante. Muestra el resultado impreso en consola y el código que utilizaste para realizar este punto. \n\n")
+  print(dos)
+  
+  cat("\n\n3.Genera una gráfica en la que se visualice la longitud de los 10 genomas virales que analizaste. Muestra el código que utilizaste para realizar este punto.\n\n")
+  pregunta_3()
+
+    
+  cat("4.Agrega una interpretación escrita, desde el punto de vista biológico, para esta gráfica (de 6 a 12 renglones).La gráfica muestra la longitud de los genomas de diez cepas diferentes del virus SARS-CoV-2. Se puede observar que la longitud de los genomas oscila entre 29.5 y 29.9 kpb, sin embargo, hay algunas variantes que tienen una longitud de genoma ligeramente menor, como la variante B.1.427 (29.5 kpb) y la variante B.1.429 (29.6 kpb). Cabe mencionar que la variante B.1.1.7, que se identificó por primera vez en el Reino Unido, tiene una longitud de genoma de 29.9 kpb, lo cual es la longitud máxima observada en las variantes de SARS-CoV-2 analizadas en este estudio.
+  
+  Es importante destacar que la longitud del genoma de un virus está estrechamente relacionada con su estructura y función. En el caso del SARS-CoV-2, el genoma es una cadena de ARN de cadena sencilla que contiene información genética para la producción de proteínas virales y para la replicación del virus. Cualquier cambio en la longitud del genoma puede afectar la capacidad del virus para replicarse y propagarse, lo cual podría tener implicaciones importantes en términos de transmisibilidad y patogenicidad.
+  
+  En general, la variación en la longitud del genoma entre las diferentes cepas de SARS-CoV-2 analizadas en esta gráfica es relativamente pequeña. Sin embargo, esta información es importante para comprender mejor la biología del virus y para identificar cualquier cambio en la longitud del genoma que pueda surgir en futuras variantes del SARS-CoV-2.\n\n")
+    
+    
+    cat("5.Calcula la composición de nucleótidos a cada una de las variantes del virus. Muestra el resultado impreso en consola y el código que utilizaste para realizar este punto.\n\n")
+    
+     cat("6. Genera una gráfica en la que se visualice la composición de nucleótidos de los 10 genomas virales que analizaste. Muestra el código que utilizaste para realizar este punto.\n\n")
+     
+
+  cat("MT705576.1: Variante B.1.1.519 de SARS-CoV-2 (Países Bajos)\n\n")
+  resultados_5_1 <- pregunta_5_1()
+  print(resultados_5_1)
+  pregunta_6_1()
+  cat("\n\nLa composición de nucleótidos de la variante B.1.1.519 de SARS-CoV-2 muestra una cantidad mayor de A y G que de T y C. La cantidad de A es la más alta con 501, seguida de G con 377, C con 317 y T con 290. Es importante destacar que aunque la cantidad de A es la más alta, la diferencia con G no es tan amplia como se observa en otras variantes del virus.
+
+En general, esta composición es similar a la de otros virus SARS-CoV-2, aunque pueden existir pequeñas variaciones. La composición de nucleótidos puede ser importante para entender la evolución y características de la variante del virus, así como para el desarrollo de pruebas diagnósticas y terapias específicas.\n\n")
+  
+  
+  
+  
+  cat("MW631258.1: Variante B.1.1.7 de SARS-CoV-2 (Reino Unido)\n\n")
+  resultados_5_2 <- pregunta_5_2()
+  print(resultados_5_2)
+  pregunta_6_2()
+  cat("\n\nLa composición de nucleótidos de la muestra MW631258.1 de la variante B.1.1.7 de SARS-CoV-2 muestra una mayor cantidad de T que de A, una cantidad intermedia de G y la menor cantidad de C. La cantidad de T es la más alta con 115, seguida de G con 94, A con 70 y C con 50. La cantidad de C es la más baja de las cuatro bases y es notablemente menor que la cantidad de G. Esta diferencia en la composición de nucleótidos puede ser relevante para entender las características y la evolución de la variante del virus. La variante B.1.1.7 ha sido objeto de preocupación debido a su mayor transmisibilidad y su capacidad para causar enfermedad grave. El análisis de la composición de nucleótidos puede proporcionar información adicional para entender mejor las características de esta variante y su posible impacto en la salud pública.\n\n")
+  
+  
+  
+  
+  cat("MW787229.1: Variante B.1.258 de SARS-CoV-2 (Sudáfrica)\n\n") 
+  resultados_5_3 <- pregunta_5_3()
+  print(resultados_5_3)
+  pregunta_6_3()
+  cat("\n\nLa grafica de composición de nucleótidos de la variante B.1.258 de SARS-CoV-2 muestra una distribución desigual de los cuatro nucleótidos, donde el G es el nucleótido más frecuente con 104 conteos, seguido por C con 57 conteos. Por otro lado, el número de conteos de A y T son bastante similares con 58 y 54 respectivamente. Esto sugiere que la variante B.1.258 tiene una composición de nucleótidos diferente a la secuencia original del virus, lo cual podría estar relacionado con sus características biológicas y patogénicas.\n\n")
+  
+  
+  
+  
+  cat("MT676610.1: SARS-CoV-2 (Estados Unidos)\n\n")
+  resultados_5_4 <- pregunta_5_4()
+  print(resultados_5_4)
+  pregunta_6_4()
+  cat("\n\nLa grafica de composición de nucleótidos de la variante SARS-CoV-2 de Estados Unidos (MT676610.1) muestra una distribución equilibrada de nucleótidos A, T, G y C, aunque la cantidad de A y T son un poco más alta que la cantidad de G y C. En general, esta distribución es similar a la de otras variantes del SARS-CoV-2. Es importante señalar que esta variante se ha encontrado en diferentes estados de EE. UU., y su prevalencia ha ido disminuyendo con el tiempo.\n\n")
+  
+  
+  
+  cat("MT757480.1: SARS-CoV-2 (Estados Unidos)\n\n")
+  resultados_5_5 <- pregunta_5_5()
+  print(resultados_5_5)
+  pregunta_6_5()
+  cat("\n\n
+La secuencia de nucleótidos de la variante MT757480.1 de SARS-CoV-2 (Estados Unidos) muestra una composición desigual de nucleótidos, con una cantidad significativamente mayor de bases C en comparación con las bases A y T. La cantidad de bases G está ligeramente por encima de la cantidad de bases T, lo que sugiere una posible mutación en la secuencia original. Además, la composición de nucleótidos en esta variante puede ser útil para el análisis filogenético y la identificación de cambios genéticos que pueden estar relacionados con la patogenicidad del virus. En general, la composición de nucleótidos sugiere una posible adaptación del virus a su entorno y una mayor capacidad para infectar y propagarse.\n\n")
+  
+  
+  cat("MW857166.1: Variante P.1 de SARS-CoV-2 (Brasil)\n\n")
+  resultados_5_6 <- pregunta_5_6()
+  print(resultados_5_6)
+  pregunta_6_6()
+  cat("\n\nPara la secuencia MT857166.1 (variante P.1 de SARS-CoV-2 aislada en Brasil), se observa que la proporción de nucleótidos A y T es similar, con 109 y 122 respectivamente, mientras que la cantidad de G y C son similares también, con 110 y 121 respectivamente. Esto sugiere que la secuencia tiene una distribución equilibrada de nucleótidos. Además, se puede notar que la cantidad total de nucleótidos es relativamente alta en comparación con las secuencias analizadas anteriormente.\n\n")
+  
+  
+  cat("MW857167.1: Variante P.2 de SARS-CoV-2 (Brasil)\n\n")
+  resultados_5_7 <- pregunta_5_7()
+  print(resultados_5_7)
+  pregunta_6_7()
+  cat("\n\nEn la composición de nucleótidos de la variante P.2 de SARS-CoV-2 (Brasil), la cantidad de C es mayor que la cantidad de A, lo cual indica una mayor proporción de bases púricas en la secuencia de esta variante. Además, la cantidad de T y G son muy similares entre sí, lo que sugiere una distribución más uniforme de las bases pirimidínicas y purínicas. En general, la variante P.2 presenta una composición de nucleótidos bastante equilibrada, aunque con una ligera tendencia hacia una mayor cantidad de bases púricas.\n\n")
+  
+  
+  
+  
+  cat("MW857168.1: Variante B.1.351 de SARS-CoV-2 (Sudáfrica)\n\n")
+  resultados_5_8 <- pregunta_5_8()
+  print(resultados_5_8)
+  pregunta_6_8()
+  cat("\n\nLa grafica de composición de nucleótidos de la variante B.1.351 de SARS-CoV-2 (Sudáfrica) muestra una distribución relativamente equilibrada de los cuatro nucleótidos A, T, G y C. La cantidad de A es de 125, la cantidad de T es de 133, la cantidad de G es de 122 y la cantidad de C es de 130. Aunque la cantidad de T es ligeramente mayor que la de A, y la cantidad de C es ligeramente mayor que la de G, la composición general parece estar bastante equilibrada. Esto puede sugerir que la variante B.1.351 ha experimentado una selección equilibrada y no una presión selectiva intensa en términos de su composición de nucleótidos.\n\n")
+  
+  
+  cat("MW857169.1: Variante B.1.427 de SARS-CoV-2 (California)\n\n")
+  resultados_5_9 <- pregunta_5_9()
+  print(resultados_5_9)
+  pregunta_6_9()
+  cat("\n\nEl nucleótido más común en esta secuencia es T, seguido de A y G, mientras que C es el menos común. Esto sugiere una posible presencia de mutaciones en los nucleótidos C y T en esta variante.\n\n")
+  
+  
+  cat("MW857170.1: Variante B.1.429 de SARS-CoV-2 (California)\n\n") 
+  resultados_5_10 <- pregunta_5_10()
+  print(resultados_5_10)
+  pregunta_6_10()
+  cat("\n\nEn la composición de nucleótidos de la variante B.1.429 de SARS-CoV-2, se observa que la cantidad de adenina (A) es de 140, mientras que la cantidad de timina (T) es de 185. Por otro lado, la cantidad de guanina (G) es de 151 y la cantidad de citosina (C) es de 118. En esta variante, la proporción de A y T es mayor que la de G y C, lo que es común en virus de ARN. Es importante destacar que, aunque la cantidad de G y C es menor que la de A y T, esta variante sigue siendo capaz de infectar y propagarse.\n\n")
+  
+  cat("\n\n8.Calcula el %GC de cada variante. Muestra el resultado impreso en consola y el código que utilizaste para realizar este punto.\n\n")
+  
+  cat("MT705576.1")
+  resultados_8_1 <- pregunta_8_1()
+  print(resultados_8_1)
+  
+  cat("MW631258.1")
+  resultados_8_2 <- pregunta_8_2()
+  print(resultados_8_2)
+  
+  cat("MW787229.1")
+  resultados_8_3 <- pregunta_8_3()
+  print(resultados_8_3)
+  
+  cat("MT676610.1")
+  resultados_8_4 <- pregunta_8_4()
+  print(resultados_8_4)
+  
+  cat("MT757480.1")
+  resultados_8_5 <- pregunta_8_5()
+  print(resultados_8_5)
+  
+  cat("MW857166.1")
+  resultados_8_6 <- pregunta_8_6()
+  print(resultados_8_6)
+  
+  cat("MW857167.1")
+  resultados_8_7 <- pregunta_8_7()
+  print(resultados_8_7)
+  
+  cat("MW857168.1")
+  resultados_8_8 <- pregunta_8_8()
+  print(resultados_8_8)
+  
+  cat("MW857169.1")
+  resultados_8_9 <- pregunta_8_9()
+  print(resultados_8_9)
+  
+  cat("MW857170.1")
+  resultados_8_10 <- pregunta_8_10()
+  print(resultados_8_10)
+  
+  
+
+   cat("\n\n9.Genera una gráfica en la que se visualice el %GC de los 10 genomas virales que analizaste. Muestra el código que utilizaste para realizar este punto.\n\n")
+  pregunta_9()  
+  
+  cat("\n\n10.Agrega una interpretación escrita, desde el punto de vista biológico, para esta gráfica (de 6 a 12 renglones).
+")
+  
+  cat("\n\nLos genomas analizados muestran variaciones en los porcentajes de GC. La Variante B.1.1.519 (Países Bajos) tiene 46.73% de GC, B.1.1.7 (Reino Unido) tiene 43.5%, y B.1.258 (Sudáfrica) tiene 58.97%. Los genomas de SARS-CoV-2 de Estados Unidos tienen 48.5% y 51.35% de GC. Las variantes P.1 y P.2 de Brasil tienen 50% y 49.32% de GC respectivamente. Las variantes B.1.351, B.1.427 y B.1.429 tienen 49.41%, 45.03% y 45.29% de GC. Estas diferencias en GC pueden reflejar adaptaciones genéticas y evolutivas en cada variante.\n\n")
+  
+  
+  cat("\n\n11-Crea una tabla (marco de datos) en la que se inluya el nombre común de cada virus, el ID (identificador en base de datos) de cada genoma, la longitud y el contenido GC de cada genoma. Muestra el resultado impreso en consola y el código que utilizaste para realizar este punto.
+\n\n")
+  
+  print(pregunta_11())
+
+  
+  
+  
+}
+
+main()
+
+```
+
+
+
+
