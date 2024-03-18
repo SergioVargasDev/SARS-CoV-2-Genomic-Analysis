@@ -25,6 +25,7 @@ The primary aim of this project is to leverage bioinformatics tools and data ana
 
 This project underscores the importance of genomic analysis in understanding pathogens like SARS-CoV-2. By dissecting the genetic makeup of various virus variants, it provides a foundation for informed decision-making in public health and medical research. The insights gleaned from this study not only contribute to the scientific community's knowledge pool but also highlight the pivotal role of data-driven methodologies in combating global health crises.
 
+![WEB_PAGE](covid.jpg)
 
 
 
