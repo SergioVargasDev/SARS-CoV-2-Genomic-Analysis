@@ -1,4 +1,4 @@
-# SARS-CoV-2-Genomic-Analysis-Project
+# SARS-CoV-2-Genomic-Analysis
 
 ## Project Overview: 
 
