@@ -23,7 +23,7 @@ The primary aim of this project is to leverage bioinformatics tools and data ana
 
 ## Contribution
 
-### To Public Health:
+### To Public Health
 This project identifies variant-specific risks, tracks viral evolution, and guides strategies for disease prevention and intervention, enhancing public health decision-making.
 
 ### To Scientific Research
