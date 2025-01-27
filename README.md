@@ -19,7 +19,7 @@ The primary aim of this project is to leverage bioinformatics tools and data ana
 
 * R Programming Language: Utilized for all data processing and analysis tasks, thanks to its robust statistical computation capabilities.
 * rentrez and Biostrings Libraries: Employed for efficient data retrieval from NCBI databases and handling of biological string data.
-* Data Visualization Tools: Leveraged within R for generating insightful plots and charts to illustrate the analysis results.
+* Data Visualization Tools: Powered by ggplot2 for accessible insights.
 
 ## Contribution
 
