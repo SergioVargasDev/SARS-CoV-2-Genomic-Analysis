@@ -21,6 +21,15 @@ The primary aim of this project is to leverage bioinformatics tools and data ana
 * rentrez and Biostrings Libraries: Employed for efficient data retrieval from NCBI databases and handling of biological string data.
 * Data Visualization Tools: Leveraged within R for generating insightful plots and charts to illustrate the analysis results.
 
+## Contribution
+
+### To Public Health:
+This project identifies variant-specific risks, tracks viral evolution, and guides strategies for disease prevention and intervention, enhancing public health decision-making.
+
+### To Scientific Research
+It automates large-scale genomic analysis, uncovering meaningful patterns through machine learning and bioinformatics tools. This work contributes to virology, epidemiology, and vaccine development efforts, offering a scalable solution for genomic studies.
+
+
 ## Conclusion
 
 This project underscores the importance of genomic analysis in understanding pathogens like SARS-CoV-2. By dissecting the genetic makeup of various virus variants, it provides a foundation for informed decision-making in public health and medical research. The insights gleaned from this study not only contribute to the scientific community's knowledge pool but also highlight the pivotal role of data-driven methodologies in combating global health crises.
