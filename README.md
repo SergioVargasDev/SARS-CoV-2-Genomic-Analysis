@@ -1,6 +1,6 @@
 # SARS-CoV-2-Genomic-Analysis
 
-## Project Overview: 
+## Overview: 
 
 This project presents a comprehensive genomic analysis of various SARS-CoV-2 variants, offering a deep dive into the genetic diversity of the virus responsible for the COVID-19 pandemic. By examining the genomic sequences of different variants, this research uncovers patterns and trends that are crucial for understanding the virus's evolution and its implications for public health.
 
