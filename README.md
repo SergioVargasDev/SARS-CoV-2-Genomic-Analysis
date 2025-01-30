@@ -18,13 +18,13 @@ The primary aim of this project is to leverage bioinformatics tools and data ana
 ## Technology Stack
 
 ### Programming Language:
-R: Used for statistical computation, data processing, and genomic analysis.
+* R: Used for statistical computation, data processing, and genomic analysis.
 
 ### Data Retrieval & Processing:
-rentrez & Biostrings: Facilitate genomic data retrieval from NCBI databases and biological string handling.
+* rentrez & Biostrings: Facilitate genomic data retrieval from NCBI databases and biological string handling.
 
 ### Data Visualization:
-ggplot2: Enables clear and accessible graphical representation of genomic insights.
+* ggplot2: Enables clear and accessible graphical representation of genomic insights.
 
 ## Contribution
 
