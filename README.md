@@ -34,8 +34,10 @@ This project identifies variant-specific risks, tracks viral evolution, and guid
 ### To Scientific Research
 It automates large-scale genomic analysis, uncovering meaningful patterns through machine learning and bioinformatics tools. This work contributes to virology, epidemiology, and vaccine development efforts, offering a scalable solution for genomic studies.
 
+<div align = "center">
+  <img src = "images/covid.jpg" width = "518">
+</div>
 
-![WEB_PAGE](covid.jpg)
 
 
 
